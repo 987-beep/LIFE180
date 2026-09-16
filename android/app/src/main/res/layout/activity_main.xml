@@ -1,147 +1,392 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:background="#F8FAFC">
 
-    <LinearLayout
+    <!-- 1. Full-Screen Interactive Life360-Style Map Background View -->
+    <FrameLayout
+        android:id="@+id/mapContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:background="#E2E8F0">
 
-        <!-- Header -->
-        <LinearLayout
+        <!-- Simulated Map Vector Background with Compass Grid -->
+        <View
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EFF6FF" />
+
+        <!-- Floating Circular Avatar Member Marker (Self) -->
+        <LinearLayout
+            android:id="@+id/layoutAvatarPin"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/header_bg"
+            android:layout_gravity="center"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:gravity="center_horizontal"
+            android:elevation="6dp">
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+
+                <!-- Glowing Pulse Ring -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ring_bg"
+                    android:alpha="0.4" />
+
+                <!-- Avatar Badge -->
+                <ImageView
+                    android:id="@+id/ivMemberAvatar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:background="@drawable/header_bg"
+                    android:padding="2dp" />
+
+                <!-- Live Speed Pill -->
+                <TextView
+                    android:id="@+id/tvPinSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:background="#F59E0B"
+                    android:textColor="#FFFFFF"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp"
+                    android:text="0 km/h" />
+            </FrameLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🛡️ LIFE180%"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
+                android:id="@+id/tvPinName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Lock • Ring • Spy Camera • GPS — from web, SMS or WhatsApp"
-                android:textColor="#DDE4FF"
-                android:textSize="13sp" />
+                android:background="#0F172A"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="My Phone" />
+        </LinearLayout>
+
+        <!-- Floating Top Bar (Circle Selector + Status Pill) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/header_bg"
+            android:padding="12dp"
+            android:elevation="8dp">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@mipmap/ic_launcher_round" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LIFE180% Circle"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign in to link family"
+                    android:textColor="#E2E8F0"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvProtectStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#22C55E"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="Active" />
+        </LinearLayout>
+
+        <!-- Floating SOS / Emergency Ring Button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabSos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="260dp"
+            android:backgroundTint="#EF4444"
+            app:tint="#FFFFFF"
+            app:srcCompat="@android:drawable/ic_dialog_alert"
+            app:elevation="8dp" />
+
+        <!-- Floating Recenter / Locate Button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabRecenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="196dp"
+            android:backgroundTint="#FFFFFF"
+            app:tint="#4F46E5"
+            app:srcCompat="@android:drawable/ic_menu_mylocation"
+            app:elevation="8dp" />
+    </FrameLayout>
+
+    <!-- 2. Sliding Life360 Bottom Sheet -->
+    <LinearLayout
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:elevation="16dp"
+        app:behavior_peekHeight="220dp"
+        app:behavior_hideable="false"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <!-- Drag Handle Indicator -->
+        <View
+            android:layout_width="44dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="#CBD5E1" />
+
+        <!-- Member Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Circle Members"
+                android:textColor="#0F172A"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDeviceId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Device ID: …"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textColor="#64748B"
+                android:textSize="12sp"
+                android:text="ID: ..." />
+        </LinearLayout>
+
+        <!-- Member Card (Life360 Style) -->
+        <LinearLayout
+            android:id="@+id/memberCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="#F8FAFC"
+            android:padding="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@mipmap/ic_launcher_round" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvMemberName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My Phone (Protected)"
+                    android:textColor="#1E293B"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvMemberStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📍 Stopped • Today"
+                    android:textColor="#64748B"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tvAccount"
+                android:id="@+id/tvMemberBattery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="❌ Not signed in"
-                android:textColor="#FFFFFF"
+                android:text="🔋 85%"
+                android:textColor="#0F172A"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Protection banner -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/bannerCard"
+        <!-- Quick Remote Controls Row -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:cardCornerRadius="16dp"
-            app:strokeColor="@color/warning"
-            app:strokeWidth="2dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnProtectOn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:text="🛡️ Protect ON"
+                app:cornerRadius="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCheckup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:text="🩺 14 Guards"
+                style="@style/Widget.Material3.Button.TonalButton"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+
+        <!-- Quick Test Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTestLock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="3dp"
+                android:text="🔒 Lock"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTestRing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:text="🔔 Ring"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTestPhoto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="3dp"
+                android:text="📷 Photo"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
+        </LinearLayout>
+
+        <!-- Expandable Settings Section in Bottom Sheet -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvBannerTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🩺 Run a checkup to see your protection"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
+                    android:text="Circle Health Status"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvBannerScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Score: –"
-                    android:textSize="14sp" />
+                    android:text="All 14 protections active"
+                    android:textSize="12sp"
+                    android:textColor="#64748B" />
 
                 <TextView
                     android:id="@+id/tvBannerSub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11 protection layers available"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="2dp"
+                    android:text="Ready for real-time family location tracking and remote defense."
+                    android:textSize="11sp"
+                    android:textColor="#94A3B8" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCheckup"
+                <LinearLayout
+                    android:id="@+id/checkupContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="🩺 Run security checkup"
-                    app:cornerRadius="12dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/tvCheckupScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text=""
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/checkupContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-
-        <!-- 1. Server -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                    android:orientation="vertical" />
 
                 <TextView
+                    android:id="@+id/tvCheckupScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1️⃣ YOUR WEBSITE"
-                    android:textStyle="bold" />
+                    android:visibility="gone" />
 
+                <!-- Server connection section -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="https://your-app.vercel.app"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                    android:layout_marginTop="12dp"
+                    android:hint="Vercel Cloud Server URL">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etServer"
@@ -153,246 +398,101 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSaveServer"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:layout_weight="1"
-                        android:text="Save" />
+                        android:layout_marginEnd="4dp"
+                        android:text="Save Server" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnTestServer"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
                         android:layout_weight="1"
-                        android:text="Test"
+                        android:layout_marginStart="4dp"
+                        android:text="Test Link"
                         style="@style/Widget.Material3.Button.TonalButton" />
                 </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- 2. Google -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2️⃣ GOOGLE ACCOUNT  (same Gmail as website)"
-                    android:textStyle="bold" />
-
+                <!-- Google Account section -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnGoogle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:layout_weight="1"
-                        android:text="🔐 Sign in with Google" />
+                        android:layout_marginEnd="4dp"
+                        android:text="Google Sign In" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSignOut"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
                         android:layout_weight="1"
-                        android:text="Sign out"
+                        android:layout_marginStart="4dp"
+                        android:text="Sign Out"
                         style="@style/Widget.Material3.Button.OutlinedButton" />
                 </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- 3. Device Admin -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3️⃣ DEVICE ADMIN  (lock / wipe power)"
-                    android:textStyle="bold" />
-
+                <!-- Device Admin and Permissions -->
                 <TextView
                     android:id="@+id/tvAdminStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="❌ Device Admin: OFF" />
+                    android:layout_marginTop="10dp"
+                    android:text="Device Admin Status"
+                    android:textSize="12sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAdmin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Enable Device Admin" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- 4. Permissions -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="4️⃣ PERMISSIONS"
-                    android:textStyle="bold" />
-
-                <TextView android:id="@+id/tvPermSms" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="SMS" />
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnPermSms" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Grant SMS" style="@style/Widget.Material3.Button.TonalButton" />
-
-                <TextView android:id="@+id/tvPermNotif" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Notif" />
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnPermNotif" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Grant notifications" style="@style/Widget.Material3.Button.TonalButton" />
-
-                <TextView android:id="@+id/tvPermCamera" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Camera" />
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnPermCamera" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="📷 Grant camera (spy photos)" style="@style/Widget.Material3.Button.TonalButton" />
-
-                <TextView android:id="@+id/tvPermLocation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Location" />
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnPermLocation" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Grant location" style="@style/Widget.Material3.Button.TonalButton" />
-
-                <TextView android:id="@+id/tvNotifAccess" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="WhatsApp listener" />
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnNotifAccess" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Enable WhatsApp listener" style="@style/Widget.Material3.Button.TonalButton" />
-
-                <TextView android:id="@+id/tvSim" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="SIM" />
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnSimSave" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="💾 Save SIM fingerprint" style="@style/Widget.Material3.Button.TonalButton" />
-
-                <TextView android:id="@+id/tvBattery" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Battery" />
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnBattery" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Disable battery optimisation" style="@style/Widget.Material3.Button.TonalButton" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- 5. Security -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="5️⃣ OWNER PIN + SECURITY"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="Owner PIN (e.g. 4821)" style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etPin" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="numberPassword" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:hint="Trusted SMS number (optional)" style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etTrusted" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="phone" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:hint="Trusted WhatsApp name (optional)" style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etWaName" android:layout_width="match_parent" android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:hint="This phone's own number" style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etMyNumber" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="phone" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:hint="Lock-screen message for finder" style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etLockMsg" android:layout_width="match_parent" android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSaveSecurity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Save security settings" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- 6. Protection -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="6️⃣ PROTECTION"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvProtectStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Server: …" />
+                    android:text="Enable Device Admin"
+                    style="@style/Widget.Material3.Button.TonalButton" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="4dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnProtectOn"
+                        android:id="@+id/btnPermLocation"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:layout_weight="1"
-                        android:text="🛡️ ON" />
+                        android:layout_marginEnd="2dp"
+                        android:text="GPS"
+                        style="@style/Widget.Material3.Button.TonalButton" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnProtectOff"
+                        android:id="@+id/btnPermCamera"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
                         android:layout_weight="1"
-                        android:text="OFF"
-                        style="@style/Widget.Material3.Button.OutlinedButton" />
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:text="Camera"
+                        style="@style/Widget.Material3.Button.TonalButton" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPermSms"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="2dp"
+                        android:text="SMS"
+                        style="@style/Widget.Material3.Button.TonalButton" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -402,62 +502,115 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPermNotif"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="2dp"
+                        android:text="Notif"
+                        style="@style/Widget.Material3.Button.TonalButton" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnNotifAccess"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:text="WA Listener"
+                        style="@style/Widget.Material3.Button.TonalButton" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnBattery"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="2dp"
+                        android:text="Battery"
+                        style="@style/Widget.Material3.Button.TonalButton" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSimSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="💾 Save SIM Fingerprint"
+                    style="@style/Widget.Material3.Button.TonalButton" />
+
+                <!-- PIN & Security settings -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Owner PIN (4-16 digits)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:hint="Trusted Emergency Phone Number">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTrusted"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:hint="Lost Screen Message">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etLockMsg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSaveSecurity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Save Security Settings" />
+
+                <!-- Controls & Poll -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnProtectOff"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
+                        android:text="Stop Protect"
+                        style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPollNow"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="2dp"
                         android:layout_weight="1"
-                        android:text="Poll"
-                        style="@style/Widget.Material3.Button.TonalButton" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnTestLock"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:layout_weight="1"
-                        android:text="🔒"
-                        style="@style/Widget.Material3.Button.TonalButton" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnTestRing"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:layout_weight="1"
-                        android:text="🔔"
-                        style="@style/Widget.Material3.Button.TonalButton" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnTestPhoto"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:layout_weight="1"
-                        android:text="📷"
+                        android:layout_marginStart="4dp"
+                        android:text="Poll Server"
                         style="@style/Widget.Material3.Button.TonalButton" />
                 </LinearLayout>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Log -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="16dp">
-
-            <TextView
-                android:id="@+id/tvLog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:text="📋 Log:"
-                android:textSize="12sp" />
-        </com.google.android.material.card.MaterialCardView>
-
+        </ScrollView>
     </LinearLayout>
-</ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

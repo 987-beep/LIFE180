@@ -71,6 +71,29 @@ class MainActivity : AppCompatActivity() {
             if (Prefs.owner(this).isEmpty()) Prefs.set(this, "owner_email", it.lowercase())
         }
 
+        // ---- Life360 Floating Action Buttons ----
+        binding.fabSos.setOnClickListener {
+            toast("🚨 SOS Emergency Siren Triggered!")
+            RingActivity.show(this)
+        }
+
+        binding.fabRecenter.setOnClickListener {
+            toast("Locating device on map…")
+            Thread {
+                val loc = LocationTracker.getFreshLocation(this, "recenter_btn")
+                runOnUiThread {
+                    if (loc != null) {
+                        val speedKmh = Math.round(loc.speed * 3.6f)
+                        binding.tvPinSpeed.text = "$speedKmh km/h"
+                        binding.tvMemberStatus.text = if (speedKmh > 15) "🚗 Driving • ${speedKmh} km/h" else "📍 Stopped • Current"
+                        toast("📍 GPS Fix: ${loc.latitude.toString().take(7)}, ${loc.longitude.toString().take(7)}")
+                    } else {
+                        toast("Searching for GPS satellites…")
+                    }
+                }
+            }.start()
+        }
+
         // ---- checkup ----
         binding.btnCheckup.setOnClickListener { runCheckup() }
 
@@ -197,7 +220,7 @@ class MainActivity : AppCompatActivity() {
                 if (fp.isNotEmpty()) Prefs.set(this, "sim_baseline", fp)
             }
             GuardService.start(this)
-            toast("🛡️ Protection service started")
+            toast("🛡️ Circle Protection active")
             refreshAll()
         }
         binding.btnProtectOff.setOnClickListener {
@@ -252,7 +275,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshAll() {
-        binding.tvDeviceId.text = "Device ID: ${Api.deviceId(this)}"
+        val devId = Api.deviceId(this)
+        binding.tvDeviceId.text = "ID: $devId"
+        binding.tvMemberName.text = "${Build.MODEL} (This Device)"
+        binding.tvPinName.text = Build.MODEL.take(12)
+
+        val batt = Api.batteryPct(this)
+        if (batt >= 0) binding.tvMemberBattery.text = "🔋 $batt%"
 
         val owner = Prefs.owner(this)
         if (owner.isNotEmpty()) {
@@ -270,7 +299,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnAdmin.isEnabled = !admin
 
         val protOn = Prefs.getBool(this, "protection_on", false)
-        binding.tvProtectStatus.text = if (protOn) "🟢 Protection is RUNNING" else "⚪ Protection is STOPPED"
+        binding.tvProtectStatus.text = if (protOn) "🟢 Active" else "⚪ Stopped"
     }
 
     private fun runCheckup() {
@@ -286,7 +315,7 @@ class MainActivity : AppCompatActivity() {
                 binding.tvBannerScore.text = "$okCount / $total protections active"
                 binding.tvCheckupScore.text = "$okCount / $total protections active"
                 binding.tvBannerSub.text = if (okCount == total)
-                    "Your phone is ready for remote lock, audio recording, 30-day driving tracker & spy camera."
+                    "Your phone is ready for real-time family location tracking and remote defense."
                 else
                     "Fix items marked with ❌ below for full theft protection."
 

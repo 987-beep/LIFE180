@@ -11,8 +11,8 @@ android {
         applicationId = "com.lostdeviceguard.app"
         minSdk = 26
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.3.0"
+        versionCode = 5
+        versionName = "1.4.0"
         // ⚠️ Change to YOUR Vercel URL (or change it inside the app's settings screen)
         buildConfigField("String", "SERVER_URL", "\"https://your-app.vercel.app\"")
     }
