@@ -152,7 +152,7 @@ export default function Dashboard() {
     <div className="container">
       <header className="header">
         <div className="logo">
-          <img src="/logo-thumb.png" alt="LIFE180%" style="width:28px;height:28px;border-radius:6px;object-fit:cover;margin-right:8px;vertical-align:middle" />
+          <img src="/logo-thumb.png" alt="LIFE180%" style={{ width: 28, height: 28, borderRadius: 6, objectFit: "cover", marginRight: 8, verticalAlign: "middle" }} />
           <span>LIFE180%</span>
           <span className="pill" style={{ background: "#22c55e22", color: "#4ade80", border: "1px solid #22c55e44", fontSize: 11 }}>
             v1.3 Pro
