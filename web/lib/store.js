@@ -1,10 +1,10 @@
-// Tiny persistent store (JSON file). Works on Vercel for demo; for production
-// swap to Vercel KV / Upstash Redis / Firebase (see README).
+// Tiny persistent store (JSON file + optional Vercel KV / Redis / Upstash cloud support).
+// Automatically auto-purges all data older than 30 days on both write and read.
 import fs from "fs";
 import path from "path";
 
 const FILE = path.join("/tmp", "ldg-store.json");
-// fallback to project dir when /tmp not writable
+
 function filePath() {
   try {
     fs.accessSync("/tmp", fs.constants.W_OK);
@@ -40,6 +40,9 @@ function purgeExpired(data) {
   if (Array.isArray(data.commands)) {
     data.commands = data.commands.filter((c) => isFresh(c.createdAt || c.ts));
   }
+  if (Array.isArray(data.forwarded)) {
+    data.forwarded = data.forwarded.filter((f) => isFresh(f.ts));
+  }
   if (Array.isArray(data.log)) {
     data.log = data.log.filter((l) => isFresh(l.t || l.ts));
   }
@@ -52,7 +55,17 @@ function load() {
     const parsed = JSON.parse(raw);
     return purgeExpired(parsed);
   } catch {
-    return { devices: [], commands: [], log: [], locations: [], audioRecordings: [], photos: [], alerts: [] };
+    return {
+      devices: [],
+      commands: [],
+      log: [],
+      locations: [],
+      audioRecordings: [],
+      photos: [],
+      alerts: [],
+      forwarded: [],
+      sessions: []
+    };
   }
 }
 
