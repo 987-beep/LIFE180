@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_blue">#4F7CFF</color>
+    <color name="brand_purple">#7C3AED</color>
+    <color name="brand_teal">#14B8A6</color>
+    <color name="bg_dark">#0B1020</color>
+    <color name="card_dark">#151D33</color>
+    <color name="success">#22C55E</color>
+    <color name="danger">#EF4444</color>
+    <color name="warning">#F59E0B</color>
+    <color name="muted">#9AA7C7</color>
+</resources>

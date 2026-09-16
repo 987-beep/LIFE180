@@ -1,0 +1,15 @@
+# Android build artifacts & toolchain
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+*.keystore
+
+# Node & Next.js build artifacts
+web/node_modules/
+web/.next/
+web/.env.local
+
+# Temp files
+*.log
+.DS_Store
