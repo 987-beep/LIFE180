@@ -55,14 +55,15 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("map"); // map | driving | safety | places | settings
   const [sheetExpanded, setSheetExpanded] = useState(false);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("ldg_email");
+useEffect(() => {
+    let saved = localStorage.getItem("ldg_email");
     if (!saved) {
-      router.push("/");
-      return;
+      // Auto-initialize with default demo family account if accessing directly
+      saved = "family@life180.com";
+      localStorage.setItem("ldg_email", saved);
     }
     setEmail(saved);
-  }, [router]);
+  }, []);
 
   const refreshData = useCallback(async () => {
     if (!email) return;
